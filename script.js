@@ -5,8 +5,12 @@
 
     // URL del backend: se define con data-api en el <script> del widget.
     // Ejemplo: <script src=".../script.js" data-api="https://tu-backend.onrender.com"></script>
+    // Fallback: si no hay data-api, intentamos deducir /widget (modo antiguo).
     const rawApi = document.currentScript.getAttribute('data-api');
-    const API_URL = rawApi ? rawApi.replace(/\/+$/, '') : "";
+    let API_URL = rawApi ? rawApi.replace(/\/+$/, '') : "";
+    if (!API_URL && SCRIPT_URL.includes('/widget/')) {
+        API_URL = SCRIPT_URL.substring(0, SCRIPT_URL.indexOf('/widget'));
+    }
 
     // Mantener sincronizado con el backend.
     const MAX_MESSAGE_CHARS = 120;
