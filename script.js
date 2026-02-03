@@ -99,8 +99,8 @@
         }
 
         try {
-            const resp = await fetch(`${API_URL}/`, { method: 'GET', cache: 'no-store' });
-            if (!resp.ok) throw new Error('Not ready');
+            // Usamos no-cors para evitar bloqueos por CORS cuando el HTML se abre desde file://
+            await fetch(`${API_URL}/`, { method: 'GET', cache: 'no-store', mode: 'no-cors' });
             setBackendState(true);
         } catch (e) {
             setBackendState(false);
