@@ -12,6 +12,24 @@
 
     const MAX_MESSAGE_CHARS = 120;
 
+    // FUNCIÓN PARA CONVERTIR MARKDOWN A HTML
+    function parseMarkdown(text) {
+        if (!text) return "";
+        // Escapar HTML básico
+        let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        // Negritas (**texto**)
+        html = html.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        // Cursivas (*texto*)
+        html = html.replace(/\*(.*?)\*/g, '<i>$1</i>');
+        // Listas (- item)
+        html = html.replace(/^\s*[-*]\s+(.*)$/gm, '• $1<br>');
+        // Listas numeradas (1. item)
+        html = html.replace(/^\s*(\d+\.)\s+(.*)$/gm, '$1 $2<br>');
+        // Saltos de línea
+        html = html.replace(/\n/g, '<br>');
+        return html;
+    }
+
     // 2. FUNCIÓN PRINCIPAL (Se ejecuta solo cuando hay CSS)
     function initWidget() {
         // Plantilla HTML
@@ -72,7 +90,13 @@
             div.className = `message ${role}`;
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
-            bubble.innerHTML = text.replace(/\n/g, '<br>');
+            
+            if (role === 'bot') {
+                bubble.innerHTML = parseMarkdown(text);
+            } else {
+                bubble.textContent = text; 
+            }
+            
             div.appendChild(bubble);
             chatBox.appendChild(div);
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -115,7 +139,11 @@
             history.push({ role: "user", content: text });
 
             const loadingId = "loading-" + Date.now();
-            addMessage('bot', '<span id="' + loadingId + '">Pensando... 🌻</span>');
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message bot';
+            loadingDiv.innerHTML = `<div class="bubble"><span id="${loadingId}">Pensando... 🌻</span></div>`;
+            chatBox.appendChild(loadingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
                 const response = await fetch(`${API_URL}/api/v1/chat`, {
@@ -124,8 +152,8 @@
                     body: JSON.stringify({ messages: history })
                 });
                 
-                const loadEl = document.getElementById(loadingId);
-                if (loadEl) loadEl.parentElement.parentElement.remove();
+                // Eliminar el mensaje de carga
+                loadingDiv.remove();
 
                 if (!response.ok) throw new Error('Error API');
                 const data = await response.json();
@@ -135,8 +163,7 @@
 
             } catch (e) {
                 console.error(e);
-                const loadEl = document.getElementById(loadingId);
-                if (loadEl) loadEl.parentElement.parentElement.remove();
+                loadingDiv.remove();
                 addMessage('bot', '⚠️ Error de conexion.');
             }
         }
