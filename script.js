@@ -15,17 +15,14 @@
     // FUNCIÓN PARA CONVERTIR MARKDOWN A HTML
     function parseMarkdown(text) {
         if (!text) return "";
-        // Escapar HTML básico
         let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        // Negritas (**texto**)
+        
         html = html.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-        // Cursivas (*texto*)
         html = html.replace(/\*(.*?)\*/g, '<i>$1</i>');
-        // Listas (- item)
-        html = html.replace(/^\s*[-*]\s+(.*)$/gm, '• $1<br>');
-        // Listas numeradas (1. item)
-        html = html.replace(/^\s*(\d+\.)\s+(.*)$/gm, '$1 $2<br>');
-        // Saltos de línea
+        
+        html = html.replace(/^\s*[-*]\s+(.*)$/gm, '<div style="margin-left: 15px; margin-bottom: 2px;">• $1</div>');
+        html = html.replace(/^\s*(\d+\.)\s+(.*)$/gm, '<div style="margin-top: 10px; margin-bottom: 2px;"><b>$1</b> $2</div>');
+        
         html = html.replace(/\n/g, '<br>');
         return html;
     }
