@@ -17,19 +17,27 @@
         if (!text) return "";
         let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         
+        // Formato básico
         html = html.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
         html = html.replace(/\*(.*?)\*/g, '<i>$1</i>');
         
-        html = html.replace(/^\s*[-*]\s+(.*)$/gm, '<div style="margin-left: 15px; margin-bottom: 2px;">• $1</div>');
-        html = html.replace(/^\s*(\d+\.)\s+(.*)$/gm, '<div style="margin-top: 10px; margin-bottom: 2px;"><b>$1</b> $2</div>');
+        // 1. Listas (Bullets): Margin-bottom 0 y line-height ajustado
+        html = html.replace(/^\s*[-*]\s+(.*)$/gm, '<div style="margin-left: 15px; margin-bottom: 0px; line-height: 1.4;">• $1</div>');
         
+        // 2. Numeración: Margin-top reducido (6px) y margin-bottom 0
+        html = html.replace(/^\s*(\d+\.)\s+(.*)$/gm, '<div style="margin-top: 6px; margin-bottom: 0px; line-height: 1.4;"><b>$1</b> $2</div>');
+        
+        // 3. Eliminar el salto de línea (\n) justo después de un </div>
+        html = html.replace(/<\/div>\s*\n/g, '</div>');
+        
+        // 4. El resto de saltos de línea sí los convertimos
         html = html.replace(/\n/g, '<br>');
+        
         return html;
     }
 
-    // 2. FUNCIÓN PRINCIPAL (Se ejecuta solo cuando hay CSS)
+    // 2. FUNCIÓN PRINCIPAL
     function initWidget() {
-        // Plantilla HTML
         const widgetHTML = `
         <button class="chat-toggler" onclick="toggleChat()">
             <svg class="icon-open" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="white"/><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z" fill="currentColor"/></svg>
