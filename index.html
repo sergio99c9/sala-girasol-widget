@@ -1,34 +1,143 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Widget Sala Girasol</title>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sala Girasol | Demo</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #222;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-        h1 { margin-bottom: 10px; }
-        p { color: #aaa; }
+      :root {
+        --bg: #0b0b10;
+        --bg-2: #151521;
+        --accent: #f4a000;
+        --text: #f3f4f6;
+        --muted: #9ca3af;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Georgia", "Times New Roman", serif;
+        color: var(--text);
+        background: radial-gradient(1200px 600px at 10% 10%, #1c1c2b 0%, var(--bg) 55%, #070709 100%);
+      }
+      header {
+        padding: 56px 24px 36px;
+        text-align: center;
+        background: linear-gradient(180deg, rgba(244,160,0,0.12), rgba(0,0,0,0));
+      }
+      header h1 {
+        margin: 0;
+        font-size: 42px;
+        letter-spacing: 1px;
+      }
+      header p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 24px;
+        align-items: center;
+        background: linear-gradient(135deg, var(--bg-2), #0c0c13);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 16px;
+        padding: 24px;
+      }
+      .hero h2 {
+        margin: 0 0 12px;
+        font-size: 28px;
+      }
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+      }
+      .badge {
+        display: inline-block;
+        margin-top: 16px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(244,160,0,0.18);
+        color: var(--accent);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .grid {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .card {
+        background: #101018;
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 12px;
+        padding: 16px;
+        min-height: 140px;
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      footer {
+        text-align: center;
+        color: var(--muted);
+        padding: 32px 24px 60px;
+        font-size: 13px;
+      }
+      @media (max-width: 820px) {
+        .hero { grid-template-columns: 1fr; }
+        .grid { grid-template-columns: 1fr; }
+      }
     </style>
-</head>
-<body>
-
-    <h1>🌻 Web de Prueba - Sala Girasol</h1>
-    <p>El chatbot debería aparecer en la esquina inferior derecha.</p>
-
-    <script 
-        src="https://sergio99c9.github.io/sala-girasol-widget/script.js?v=105" 
-        data-api="https://sala-girasol.onrender.com">
-    </script>
-
-</body>
+  </head>
+  <body>
+    <header>
+      <h1>Sala Girasol</h1>
+      <p>Pub de actuaciones en Valencia</p>
+    </header>
+    <div class="container">
+      <section class="hero">
+        <div>
+          <h2>Esta semana en vivo</h2>
+          <p>Monólogos, música acústica y sesiones especiales. Reserva con el chat en la esquina.</p>
+          <span class="badge">Aforo limitado</span>
+        </div>
+        <div>
+          <div class="card">
+            <h3>Viernes · 21:00 — Acústico Girasol</h3>
+            <p>Set íntimo con artistas locales. Apertura 20:30.</p>
+          </div>
+        </div>
+      </section>
+      <section class="grid">
+        <div class="card">
+          <h3>Sábado · Comedia</h3>
+          <p>Monólogos con invitados sorpresa.</p>
+        </div>
+        <div class="card">
+          <h3>Domingo · Cine + Debate</h3>
+          <p>Sesión especial y charla posterior.</p>
+        </div>
+        <div class="card">
+          <h3>Martes · Open Mic</h3>
+          <p>Micro abierto para nuevos talentos.</p>
+        </div>
+      </section>
+    </div>
+    <footer>Demo de integración del chatbot</footer>
+    <script src="https://sergio99c9.github.io/sala-girasol-widget/script.js"
+            data-api="https://sala-girasol.onrender.com"></script>
+  </body>
 </html>
